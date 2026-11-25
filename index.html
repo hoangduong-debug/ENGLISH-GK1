@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ÔN TẬP GK1 - Tiếng Anh 10</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brown: {
+                            50: '#fdf8f6',
+                            100: '#f2e8e5',
+                            600: '#965236',
+                            700: '#7e3f27',
+                            800: '#63311f',
+                            900: '#4a2315',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        /* Highlighting target answer in passage */
+        .evidence-highlight {
+            background-color: #fef08a;
+            color: #854d0e;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(234, 179, 8, 0.5);
+        }
+
+        /* Brown interactive vocabulary class - No background highlight on page */
+        .vocab-word {
+            color: #7e3f27;
+            font-weight: 700;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            text-underline-offset: 4px;
+            cursor: pointer;
+            padding: 0 2px;
+            border-radius: 2px;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .vocab-word:hover {
+            background-color: #f2e8e5;
+            color: #4a2315;
+        }
+
+        /* Dropdown menu positioning container */
+        .blank-span-container {
+            position: relative;
+            display: inline-block;
+            vertical-align: middle;
+            margin: 2px 4px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-amber-100 selection:text-amber-900 text-base sm:text-lg">
+
+    <!-- Top Sticky Header -->
+    <header class="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3.5">
+                <div class="w-12 h-12 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-2xl shadow-sm">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-slate-900 text-xl sm:text-2xl lg:text-3xl leading-tight">ÔN TẬP GK1</h1>
+                    <p class="text-xs sm:text-sm text-slate-500 font-medium">Môn Tiếng Anh 10 • Tool Sửa Bài Trực Quan Trên Lớp</p>
+                </div>
+            </div>
+
+            <!-- Header Actions -->
+            <div class="flex items-center space-x-3">
+                <div class="hidden sm:flex items-center bg-slate-100 rounded-lg px-3.5 py-2 border border-slate-200 text-sm font-semibold">
+                    <span class="text-slate-500 mr-2">Đã tương tác:</span>
+                    <span id="progress-count" class="font-bold text-emerald-700 text-base">0/30</span>
+                </div>
+                <button onclick="resetExam()" class="bg-slate-100 hover:bg-slate-200 text-slate-800 px-4 py-2 rounded-lg text-sm sm:text-base font-bold border border-slate-300 transition flex items-center shadow-xs" title="Làm lại tất cả">
+                    <i class="fa-solid fa-rotate-right mr-2 text-emerald-600"></i> Reset
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs for Test Sections -->
+    <nav class="bg-white border-b border-slate-200 sticky top-20 z-20 shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-2 sm:space-x-3 overflow-x-auto py-2.5">
+            <button onclick="scrollToSection('part1')" class="px-3.5 py-2 rounded-lg text-sm sm:text-base font-bold text-slate-700 hover:bg-slate-100 transition whitespace-nowrap">
+                Part 1: Leaflet (Q1-5)
+            </button>
+            <button onclick="scrollToSection('part2')" class="px-3.5 py-2 rounded-lg text-sm sm:text-base font-bold text-slate-700 hover:bg-slate-100 transition whitespace-nowrap">
+                Part 2: Announcement (Q6-11)
+            </button>
+            <button onclick="scrollToSection('part3')" class="px-3.5 py-2 rounded-lg text-sm sm:text-base font-bold text-slate-700 hover:bg-slate-100 transition whitespace-nowrap">
+                Part 3: Reading (Q12-16)
+            </button>
+            <button onclick="scrollToSection('part4')" class="px-3.5 py-2 rounded-lg text-sm sm:text-base font-bold text-slate-700 hover:bg-slate-100 transition whitespace-nowrap">
+                Part 4: Arrangement (Q17-20)
+            </button>
+            <button onclick="scrollToSection('part5')" class="px-3.5 py-2 rounded-lg text-sm sm:text-base font-bold text-slate-700 hover:bg-slate-100 transition whitespace-nowrap">
+                Writing (Q21-30)
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        <!-- PART 1: LEAFLET -->
+        <section id="part1" class="scroll-mt-36 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-visible">
+            <div class="bg-slate-100/90 px-6 py-4 border-b border-slate-200 flex justify-between items-center rounded-t-2xl">
+                <h2 class="font-extrabold text-slate-900 text-base sm:text-xl flex items-center">
+                    <span class="w-8 h-8 rounded-full bg-emerald-600 text-white text-sm flex items-center justify-center mr-3 font-bold">1</span>
+                    PART 1. READ THE LEAFLET & FILL IN THE BLANKS (BẤM VÀO CHỖ TRỐNG ĐỂ CHỌN)
+                </h2>
+                <span class="text-xs sm:text-sm text-slate-500 font-semibold">5 câu hỏi</span>
+            </div>
+
+            <!-- Full Width Passage Area -->
+            <div class="p-6 bg-amber-50/20 space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                    <div class="inline-block bg-amber-100 text-amber-900 text-sm px-3 py-1 rounded-md font-bold">
+                        <i class="fa-solid fa-book-open mr-1.5"></i> Leaflet Passage
+                    </div>
+                    <span class="text-xs sm:text-sm text-slate-500 font-medium"><i class="fa-solid fa-hand-pointer text-amber-600 mr-1"></i> Bấm trực tiếp vào chỗ trống để thả menu chọn đáp án</span>
+                </div>
+
+                <h3 class="text-xl sm:text-2xl font-bold text-slate-900">Housework Is a Team Sport</h3>
+                
+                <div class="text-lg sm:text-xl lg:text-2xl text-slate-800 leading-relaxed space-y-6 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-2xs">
+                    <p class="leading-loose">
+                        In many homes, one person—usually Mum—still 
+                        <!-- Dropdown Blank 1 -->
+                        <span class="blank-span-container z-20" id="blank-container-1">
+                            <button onclick="toggleDropMenu(1, event)" id="blank-btn-1" class="px-4 py-1.5 rounded-xl font-extrabold border-2 border-emerald-600 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 transition shadow-xs text-lg sm:text-xl inline-flex items-center space-x-2 cursor-pointer">
+                                <span id="blank-text-1">(1) ________</span>
+                                <i class="fa-solid fa-chevron-down text-xs ml-1 text-emerald-700"></i>
+                            </button>
+                            <button id="explain-btn-1" onclick="openExplainModal(1, event)" class="hidden ml-1 px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white font-black rounded-xl shadow-md text-lg sm:text-xl transition-all transform hover:scale-105 cursor-pointer border-2 border-amber-300" title="Xem giải thích chi tiết">!</button>
+                            <div id="drop-menu-1" class="drop-menu-box hidden absolute left-0 top-full mt-2 bg-white border-2 border-emerald-500 shadow-2xl rounded-2xl p-2.5 z-50 w-64 space-y-1">
+                                <div class="text-xs font-bold text-slate-400 uppercase px-2 py-1 border-b border-slate-100 flex justify-between items-center">
+                                    <span>Câu 1: Chọn đáp án</span>
+                                    <button onclick="toggleDropMenu(1, event)" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+                                </div>
+                                <button onclick="selectDropOption(1, 'A', 'A. makes')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition flex items-center justify-between"><span>A. makes</span></button>
+                                <button onclick="selectDropOption(1, 'B', 'B. holds')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition flex items-center justify-between"><span>B. holds</span></button>
+                                <button onclick="selectDropOption(1, 'C', 'C. does')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition flex items-center justify-between"><span>C. does</span></button>
+                                <button onclick="selectDropOption(1, 'D', 'D. takes')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition flex items-center justify-between"><span>D. takes</span></button>
+                            </div>
+                        </span>
+                        most of the <span class="vocab-word" onclick="showVocab('housework')">housework</span>, while the others <span class="vocab-word" onclick="showVocab('relax')">relax</span> in front of the TV or play games. However, <span class="vocab-word" onclick="showVocab('experts')">experts</span> believe that <span class="vocab-word" onclick="showVocab('sharing')">sharing</span> <span class="vocab-word" onclick="showVocab('chores')">chores</span> is one of the simplest ways to build a strong and happy family.
+                    </p>
+                    <p class="leading-loose">
+                        First, when everyone takes 
+                        <!-- Dropdown Blank 2 -->
+                        <span class="blank-span-container z-20" id="blank-container-2">
+                            <button onclick="toggleDropMenu(2, event)" id="blank-btn-2" class="px-4 py-1.5 rounded-xl font-extrabold border-2 border-emerald-600 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 transition shadow-xs text-lg sm:text-xl inline-flex items-center space-x-2 cursor-pointer">
+                                <span id="blank-text-2">(2) ________</span>
+                                <i class="fa-solid fa-chevron-down text-xs ml-1 text-emerald-700"></i>
+                            </button>
+                            <button id="explain-btn-2" onclick="openExplainModal(2, event)" class="hidden ml-1 px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white font-black rounded-xl shadow-md text-lg sm:text-xl transition-all transform hover:scale-105 cursor-pointer border-2 border-amber-300" title="Xem giải thích chi tiết">!</button>
+                            <div id="drop-menu-2" class="drop-menu-box hidden absolute left-0 top-full mt-2 bg-white border-2 border-emerald-500 shadow-2xl rounded-2xl p-2.5 z-50 w-64 space-y-1">
+                                <div class="text-xs font-bold text-slate-400 uppercase px-2 py-1 border-b border-slate-100 flex justify-between items-center">
+                                    <span>Câu 2: Chọn đáp án</span>
+                                    <button onclick="toggleDropMenu(2, event)" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+                                </div>
+                                <button onclick="selectDropOption(2, 'A', 'A. duty')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">A. duty</button>
+                                <button onclick="selectDropOption(2, 'B', 'B. job')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">B. job</button>
+                                <button onclick="selectDropOption(2, 'C', 'C. role')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">C. role</button>
+                                <button onclick="selectDropOption(2, 'D', 'D. responsibility')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">D. responsibility</button>
+                            </div>
+                        </span>
+                        for a few simple tasks, the whole family feels like a team. Children also learn <span class="vocab-word" onclick="showVocab('useful')">useful</span> life skills, such as cooking, washing clothes and <span class="vocab-word" onclick="showVocab('managing')">managing</span> their time. Second, sharing housework 
+                        <!-- Dropdown Blank 3 -->
+                        <span class="blank-span-container z-20" id="blank-container-3">
+                            <button onclick="toggleDropMenu(3, event)" id="blank-btn-3" class="px-4 py-1.5 rounded-xl font-extrabold border-2 border-emerald-600 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 transition shadow-xs text-lg sm:text-xl inline-flex items-center space-x-2 cursor-pointer">
+                                <span id="blank-text-3">(3) ________</span>
+                                <i class="fa-solid fa-chevron-down text-xs ml-1 text-emerald-700"></i>
+                            </button>
+                            <button id="explain-btn-3" onclick="openExplainModal(3, event)" class="hidden ml-1 px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white font-black rounded-xl shadow-md text-lg sm:text-xl transition-all transform hover:scale-105 cursor-pointer border-2 border-amber-300" title="Xem giải thích chi tiết">!</button>
+                            <div id="drop-menu-3" class="drop-menu-box hidden absolute left-0 top-full mt-2 bg-white border-2 border-emerald-500 shadow-2xl rounded-2xl p-2.5 z-50 w-64 space-y-1">
+                                <div class="text-xs font-bold text-slate-400 uppercase px-2 py-1 border-b border-slate-100 flex justify-between items-center">
+                                    <span>Câu 3: Chọn đáp án</span>
+                                    <button onclick="toggleDropMenu(3, event)" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+                                </div>
+                                <button onclick="selectDropOption(3, 'A', 'A. lends')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">A. lends</button>
+                                <button onclick="selectDropOption(3, 'B', 'B. gives')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">B. gives</button>
+                                <button onclick="selectDropOption(3, 'C', 'C. borrows')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">C. borrows</button>
+                                <button onclick="selectDropOption(3, 'D', 'D. takes')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">D. takes</button>
+                            </div>
+                        </span>
+                        parents more <span class="vocab-word" onclick="showVocab('free_time')">free time</span>, so they can relax or enjoy <span class="vocab-word" onclick="showVocab('hobbies')">hobbies</span> with their children. 
+                        <!-- Dropdown Blank 4 -->
+                        <span class="blank-span-container z-20" id="blank-container-4">
+                            <button onclick="toggleDropMenu(4, event)" id="blank-btn-4" class="px-4 py-1.5 rounded-xl font-extrabold border-2 border-emerald-600 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 transition shadow-xs text-lg sm:text-xl inline-flex items-center space-x-2 cursor-pointer">
+                                <span id="blank-text-4">(4) ________</span>
+                                <i class="fa-solid fa-chevron-down text-xs ml-1 text-emerald-700"></i>
+                            </button>
+                            <button id="explain-btn-4" onclick="openExplainModal(4, event)" class="hidden ml-1 px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white font-black rounded-xl shadow-md text-lg sm:text-xl transition-all transform hover:scale-105 cursor-pointer border-2 border-amber-300" title="Xem giải thích chi tiết">!</button>
+                            <div id="drop-menu-4" class="drop-menu-box hidden absolute left-0 top-full mt-2 bg-white border-2 border-emerald-500 shadow-2xl rounded-2xl p-2.5 z-50 w-64 space-y-1">
+                                <div class="text-xs font-bold text-slate-400 uppercase px-2 py-1 border-b border-slate-100 flex justify-between items-center">
+                                    <span>Câu 4: Chọn đáp án</span>
+                                    <button onclick="toggleDropMenu(4, event)" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+                                </div>
+                                <button onclick="selectDropOption(4, 'A', 'A. Otherwise')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">A. Otherwise</button>
+                                <button onclick="selectDropOption(4, 'B', 'B. Moreover')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">B. Moreover</button>
+                                <button onclick="selectDropOption(4, 'C', 'C. Instead')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">C. Instead</button>
+                                <button onclick="selectDropOption(4, 'D', 'D. However')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">D. However</button>
+                            </div>
+                        </span>
+                        , it makes teenagers feel proud, because they see that their <span class="vocab-word" onclick="showVocab('efforts')">efforts</span> really <span class="vocab-word" onclick="showVocab('matter')">matter</span> to the family.
+                    </p>
+                    <p class="leading-loose">
+                        Of course, changing old <span class="vocab-word" onclick="showVocab('habits')">habits</span> is not always easy. Parents should 
+                        <!-- Dropdown Blank 5 -->
+                        <span class="blank-span-container z-20" id="blank-container-5">
+                            <button onclick="toggleDropMenu(5, event)" id="blank-btn-5" class="px-4 py-1.5 rounded-xl font-extrabold border-2 border-emerald-600 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 transition shadow-xs text-lg sm:text-xl inline-flex items-center space-x-2 cursor-pointer">
+                                <span id="blank-text-5">(5) ________</span>
+                                <i class="fa-solid fa-chevron-down text-xs ml-1 text-emerald-700"></i>
+                            </button>
+                            <button id="explain-btn-5" onclick="openExplainModal(5, event)" class="hidden ml-1 px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white font-black rounded-xl shadow-md text-lg sm:text-xl transition-all transform hover:scale-105 cursor-pointer border-2 border-amber-300" title="Xem giải thích chi tiết">!</button>
+                            <div id="drop-menu-5" class="drop-menu-box hidden absolute left-0 top-full mt-2 bg-white border-2 border-emerald-500 shadow-2xl rounded-2xl p-2.5 z-50 w-64 space-y-1">
+                                <div class="text-xs font-bold text-slate-400 uppercase px-2 py-1 border-b border-slate-100 flex justify-between items-center">
+                                    <span>Câu 5: Chọn đáp án</span>
+                                    <button onclick="toggleDropMenu(5, event)" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+                                </div>
+                                <button onclick="selectDropOption(5, 'A', 'A. remind')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">A. remind</button>
+                                <button onclick="selectDropOption(5, 'B', 'B. suggest')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">B. suggest</button>
+                                <button onclick="selectDropOption(5, 'C', 'C. enjoy')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">C. enjoy</button>
+                                <button onclick="selectDropOption(5, 'D', 'D. avoid')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">D. avoid</button>
+                            </div>
+                        </span>
+                        their children to finish their tasks on time and <span class="vocab-word" onclick="showVocab('praise')">praise</span> them for every small step. A clear weekly <span class="vocab-word" onclick="showVocab('timetable')">timetable</span> on the fridge can also help. With a little <span class="vocab-word" onclick="showVocab('patience')">patience</span>, any family can create a fair and <span class="vocab-word" onclick="showVocab('cheerful')">cheerful</span> home.
+                    </p>
+                </div>
+
+                <!-- Integrated Accordion for Explanations Part 1 -->
+                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-2xs">
+                    <button onclick="toggleAccordion('part1-explain')" class="w-full px-6 py-4 bg-slate-100 hover:bg-slate-200 transition text-left font-extrabold text-slate-800 text-base sm:text-lg flex justify-between items-center">
+                        <span class="flex items-center"><i class="fa-solid fa-circle-info text-emerald-600 mr-2 text-xl"></i> Xem giải thích đáp án Part 1 (Câu 1 - 5)</span>
+                        <i id="part1-explain-icon" class="fa-solid fa-chevron-down transition-transform duration-200"></i>
+                    </button>
+                    <div id="part1-explain" class="hidden p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-slate-50/50 border-t border-slate-200">
+                        <div class="p-3 bg-white border border-slate-200 rounded-xl shadow-2xs">
+                            <span class="font-bold text-emerald-800 text-base">Câu 1: C. does</span>
+                            <p class="text-slate-600 text-sm mt-1"><strong>Cụm từ cố định:</strong> <em>do housework</em> (làm việc nhà).</p>
+                        </div>
+                        <div class="p-3 bg-white border border-slate-200 rounded-xl shadow-2xs">
+                            <span class="font-bold text-emerald-800 text-base">Câu 2: D. responsibility</span>
+                            <p class="text-slate-600 text-sm mt-1"><strong>Cấu trúc:</strong> <em>take responsibility for</em> (chịu trách nhiệm).</p>
+                        </div>
+                        <div class="p-3 bg-white border border-slate-200 rounded-xl shadow-2xs">
+                            <span class="font-bold text-emerald-800 text-base">Câu 3: B. gives</span>
+                            <p class="text-slate-600 text-sm mt-1"><strong>Cụm từ:</strong> <em>give sb free time</em> (cho ai thời gian rảnh).</p>
+                        </div>
+                        <div class="p-3 bg-white border border-slate-200 rounded-xl shadow-2xs">
+                            <span class="font-bold text-emerald-800 text-base">Câu 4: B. Moreover</span>
+                            <p class="text-slate-600 text-sm mt-1"><strong>Từ nối:</strong> <em>Moreover</em> (Hơn thế nữa) bổ sung ý kiến.</p>
+                        </div>
+                        <div class="p-3 bg-white border border-slate-200 rounded-xl shadow-2xs">
+                            <span class="font-bold text-emerald-800 text-base">Câu 5: A. remind</span>
+                            <p class="text-slate-600 text-sm mt-1"><strong>Cấu trúc:</strong> <em>remind sb to do sth</em> (nhắc nhở ai làm gì).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 2: ANNOUNCEMENT -->
+        <section id="part2" class="scroll-mt-36 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-visible">
+            <div class="bg-slate-100/90 px-6 py-4 border-b border-slate-200 flex justify-between items-center rounded-t-2xl">
+                <h2 class="font-extrabold text-slate-900 text-base sm:text-xl flex items-center">
+                    <span class="w-8 h-8 rounded-full bg-emerald-600 text-white text-sm flex items-center justify-center mr-3 font-bold">2</span>
+                    PART 2. READ THE ANNOUNCEMENT & FILL IN THE BLANKS (BẤM VÀO CHỖ TRỐNG ĐỂ CHỌN)
+                </h2>
+                <span class="text-xs sm:text-sm text-slate-500 font-semibold">6 câu hỏi</span>
+            </div>
+
+            <!-- Full Width Announcement Box -->
+            <div class="p-6 bg-amber-50/20 space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                    <div class="inline-block bg-emerald-100 text-emerald-900 text-sm px-3 py-1 rounded-md font-bold">
+                        <i class="fa-solid fa-bullhorn mr-1.5"></i> Announcement
+                    </div>
+                    <span class="text-xs sm:text-sm text-slate-500 font-medium"><i class="fa-solid fa-hand-pointer text-emerald-600 mr-1"></i> Bấm trực tiếp vào chỗ trống để thả menu chọn đáp án</span>
+                </div>
+
+                <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 text-center uppercase tracking-wide">BIKE-TO-SCHOOL DAY</h3>
+
+                <div class="text-lg sm:text-xl lg:text-2xl text-slate-800 leading-relaxed space-y-6 border-2 border-dashed border-emerald-400 p-6 sm:p-8 rounded-2xl bg-white shadow-2xs">
+                    <p class="leading-loose">
+                        Do you want to <span class="vocab-word" onclick="showVocab('reduce')">reduce</span> air <span class="vocab-word" onclick="showVocab('pollution')">pollution</span> and keep fit at the same time? On Friday 6 November, our school’s Green Club invites all students and teachers to join Bike-to-School Day, an <span class="vocab-word" onclick="showVocab('event')">event</span> that also teaches everyone how to ride more 
+                        <!-- Dropdown Blank 6 -->
+                        <span class="blank-span-container z-20" id="blank-container-6">
+                            <button onclick="toggleDropMenu(6, event)" id="blank-btn-6" class="px-4 py-1.5 rounded-xl font-extrabold border-2 border-emerald-600 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 transition shadow-xs text-lg sm:text-xl inline-flex items-center space-x-2 cursor-pointer">
+                                <span id="blank-text-6">(6) ________</span>
+                                <i class="fa-solid fa-chevron-down text-xs ml-1 text-emerald-700"></i>
+                            </button>
+                            <button id="explain-btn-6" onclick="openExplainModal(6, event)" class="hidden ml-1 px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white font-black rounded-xl shadow-md text-lg sm:text-xl transition-all transform hover:scale-105 cursor-pointer border-2 border-amber-300" title="Xem giải thích chi tiết">!</button>
+                            <div id="drop-menu-6" class="drop-menu-box hidden absolute left-0 top-full mt-2 bg-white border-2 border-emerald-500 shadow-2xl rounded-2xl p-2.5 z-50 w-64 space-y-1">
+                                <div class="text-xs font-bold text-slate-400 uppercase px-2 py-1 border-b border-slate-100 flex justify-between items-center">
+                                    <span>Câu 6: Chọn đáp án</span>
+                                    <button onclick="toggleDropMenu(6, event)" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+                                </div>
+                                <button onclick="selectDropOption(6, 'A', 'A. safe')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">A. safe</button>
+                                <button onclick="selectDropOption(6, 'B', 'B. safety')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">B. safety</button>
+                                <button onclick="selectDropOption(6, 'C', 'C. safer')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">C. safer</button>
+                                <button onclick="selectDropOption(6, 'D', 'D. safely')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">D. safely</button>
+                            </div>
+                        </span>
+                        in busy <span class="vocab-word" onclick="showVocab('traffic')">traffic</span>.
+                    </p>
+                    <p class="leading-loose">
+                        Every <span class="vocab-word" onclick="showVocab('participant')">participant</span> who <span class="vocab-word" onclick="showVocab('cycles')">cycles</span> to school will <span class="vocab-word" onclick="showVocab('receive')">receive</span> a free 
+                        <!-- Dropdown Blank 7 -->
+                        <span class="blank-span-container z-20" id="blank-container-7">
+                            <button onclick="toggleDropMenu(7, event)" id="blank-btn-7" class="px-4 py-1.5 rounded-xl font-extrabold border-2 border-emerald-600 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 transition shadow-xs text-lg sm:text-xl inline-flex items-center space-x-2 cursor-pointer">
+                                <span id="blank-text-7">(7) ________</span>
+                                <i class="fa-solid fa-chevron-down text-xs ml-1 text-emerald-700"></i>
+                            </button>
+                            <button id="explain-btn-7" onclick="openExplainModal(7, event)" class="hidden ml-1 px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white font-black rounded-xl shadow-md text-lg sm:text-xl transition-all transform hover:scale-105 cursor-pointer border-2 border-amber-300" title="Xem giải thích chi tiết">!</button>
+                            <div id="drop-menu-7" class="drop-menu-box hidden absolute left-0 top-full mt-2 bg-white border-2 border-emerald-500 shadow-2xl rounded-2xl p-2.5 z-50 w-64 space-y-1">
+                                <div class="text-xs font-bold text-slate-400 uppercase px-2 py-1 border-b border-slate-100 flex justify-between items-center">
+                                    <span>Câu 7: Chọn đáp án</span>
+                                    <button onclick="toggleDropMenu(7, event)" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+                                </div>
+                                <button onclick="selectDropOption(7, 'A', 'A. blue cotton')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">A. blue cotton</button>
+                                <button onclick="selectDropOption(7, 'B', 'B. cotton blue')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">B. cotton blue</button>
+                                <button onclick="selectDropOption(7, 'C', 'C. blue of cotton')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">C. blue of cotton</button>
+                                <button onclick="selectDropOption(7, 'D', 'D. cotton of blue')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">D. cotton of blue</button>
+                            </div>
+                        </span>
+                        T-shirt. Each class will be <span class="vocab-word" onclick="showVocab('responsible')">responsible</span> 
+                        <!-- Dropdown Blank 8 -->
+                        <span class="blank-span-container z-20" id="blank-container-8">
+                            <button onclick="toggleDropMenu(8, event)" id="blank-btn-8" class="px-4 py-1.5 rounded-xl font-extrabold border-2 border-emerald-600 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 transition shadow-xs text-lg sm:text-xl inline-flex items-center space-x-2 cursor-pointer">
+                                <span id="blank-text-8">(8) ________</span>
+                                <i class="fa-solid fa-chevron-down text-xs ml-1 text-emerald-700"></i>
+                            </button>
+                            <button id="explain-btn-8" onclick="openExplainModal(8, event)" class="hidden ml-1 px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white font-black rounded-xl shadow-md text-lg sm:text-xl transition-all transform hover:scale-105 cursor-pointer border-2 border-amber-300" title="Xem giải thích chi tiết">!</button>
+                            <div id="drop-menu-8" class="drop-menu-box hidden absolute left-0 top-full mt-2 bg-white border-2 border-emerald-500 shadow-2xl rounded-2xl p-2.5 z-50 w-64 space-y-1">
+                                <div class="text-xs font-bold text-slate-400 uppercase px-2 py-1 border-b border-slate-100 flex justify-between items-center">
+                                    <span>Câu 8: Chọn đáp án</span>
+                                    <button onclick="toggleDropMenu(8, event)" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+                                </div>
+                                <button onclick="selectDropOption(8, 'A', 'A. of')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">A. of</button>
+                                <button onclick="selectDropOption(8, 'B', 'B. to')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">B. to</button>
+                                <button onclick="selectDropOption(8, 'C', 'C. for')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">C. for</button>
+                                <button onclick="selectDropOption(8, 'D', 'D. at')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">D. at</button>
+                            </div>
+                        </span>
+                        one section of the bike park, so please help your <span class="vocab-word" onclick="showVocab('monitors')">monitors</span> keep it tidy. Please wear a helmet 
+                        <!-- Dropdown Blank 9 -->
+                        <span class="blank-span-container z-20" id="blank-container-9">
+                            <button onclick="toggleDropMenu(9, event)" id="blank-btn-9" class="px-4 py-1.5 rounded-xl font-extrabold border-2 border-emerald-600 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 transition shadow-xs text-lg sm:text-xl inline-flex items-center space-x-2 cursor-pointer">
+                                <span id="blank-text-9">(9) ________</span>
+                                <i class="fa-solid fa-chevron-down text-xs ml-1 text-emerald-700"></i>
+                            </button>
+                            <button id="explain-btn-9" onclick="openExplainModal(9, event)" class="hidden ml-1 px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white font-black rounded-xl shadow-md text-lg sm:text-xl transition-all transform hover:scale-105 cursor-pointer border-2 border-amber-300" title="Xem giải thích chi tiết">!</button>
+                            <div id="drop-menu-9" class="drop-menu-box hidden absolute left-0 top-full mt-2 bg-white border-2 border-emerald-500 shadow-2xl rounded-2xl p-2.5 z-50 w-64 space-y-1">
+                                <div class="text-xs font-bold text-slate-400 uppercase px-2 py-1 border-b border-slate-100 flex justify-between items-center">
+                                    <span>Câu 9: Chọn đáp án</span>
+                                    <button onclick="toggleDropMenu(9, event)" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+                                </div>
+                                <button onclick="selectDropOption(9, 'A', 'A. so')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">A. so</button>
+                                <button onclick="selectDropOption(9, 'B', 'B. although')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">B. although</button>
+                                <button onclick="selectDropOption(9, 'C', 'C. unless')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">C. unless</button>
+                                <button onclick="selectDropOption(9, 'D', 'D. because')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">D. because</button>
+                            </div>
+                        </span>
+                        safety is our first <span class="vocab-word" onclick="showVocab('priority')">priority</span>.
+                    </p>
+                    <p class="leading-loose">
+                        Once everyone 
+                        <!-- Dropdown Blank 10 -->
+                        <span class="blank-span-container z-20" id="blank-container-10">
+                            <button onclick="toggleDropMenu(10, event)" id="blank-btn-10" class="px-4 py-1.5 rounded-xl font-extrabold border-2 border-emerald-600 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 transition shadow-xs text-lg sm:text-xl inline-flex items-center space-x-2 cursor-pointer">
+                                <span id="blank-text-10">(10) ________</span>
+                                <i class="fa-solid fa-chevron-down text-xs ml-1 text-emerald-700"></i>
+                            </button>
+                            <button id="explain-btn-10" onclick="openExplainModal(10, event)" class="hidden ml-1 px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white font-black rounded-xl shadow-md text-lg sm:text-xl transition-all transform hover:scale-105 cursor-pointer border-2 border-amber-300" title="Xem giải thích chi tiết">!</button>
+                            <div id="drop-menu-10" class="drop-menu-box hidden absolute left-0 top-full mt-2 bg-white border-2 border-emerald-500 shadow-2xl rounded-2xl p-2.5 z-50 w-64 space-y-1">
+                                <div class="text-xs font-bold text-slate-400 uppercase px-2 py-1 border-b border-slate-100 flex justify-between items-center">
+                                    <span>Câu 10: Chọn đáp án</span>
+                                    <button onclick="toggleDropMenu(10, event)" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+                                </div>
+                                <button onclick="selectDropOption(10, 'A', 'A. will arrive')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">A. will arrive</button>
+                                <button onclick="selectDropOption(10, 'B', 'B. arrives')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">B. arrives</button>
+                                <button onclick="selectDropOption(10, 'C', 'C. arrived')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">C. arrived</button>
+                                <button onclick="selectDropOption(10, 'D', 'D. is going to arrive')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">D. is going to arrive</button>
+                            </div>
+                        </span>
+                        at school, the Green Club will take a group photo in the yard. The best photos 
+                        <!-- Dropdown Blank 11 -->
+                        <span class="blank-span-container z-20" id="blank-container-11">
+                            <button onclick="toggleDropMenu(11, event)" id="blank-btn-11" class="px-4 py-1.5 rounded-xl font-extrabold border-2 border-emerald-600 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 transition shadow-xs text-lg sm:text-xl inline-flex items-center space-x-2 cursor-pointer">
+                                <span id="blank-text-11">(11) ________</span>
+                                <i class="fa-solid fa-chevron-down text-xs ml-1 text-emerald-700"></i>
+                            </button>
+                            <button id="explain-btn-11" onclick="openExplainModal(11, event)" class="hidden ml-1 px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white font-black rounded-xl shadow-md text-lg sm:text-xl transition-all transform hover:scale-105 cursor-pointer border-2 border-amber-300" title="Xem giải thích chi tiết">!</button>
+                            <div id="drop-menu-11" class="drop-menu-box hidden absolute left-0 top-full mt-2 bg-white border-2 border-emerald-500 shadow-2xl rounded-2xl p-2.5 z-50 w-64 space-y-1">
+                                <div class="text-xs font-bold text-slate-400 uppercase px-2 py-1 border-b border-slate-100 flex justify-between items-center">
+                                    <span>Câu 11: Chọn đáp án</span>
+                                    <button onclick="toggleDropMenu(11, event)" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+                                </div>
+                                <button onclick="selectDropOption(11, 'A', 'A. will post')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">A. will post</button>
+                                <button onclick="selectDropOption(11, 'B', 'B. have posted')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">B. have posted</button>
+                                <button onclick="selectDropOption(11, 'C', 'C. will be posted')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">C. will be posted</button>
+                                <button onclick="selectDropOption(11, 'D', 'D. are posting')" class="w-full text-left p-2.5 rounded-xl hover:bg-emerald-50 hover:text-emerald-900 font-bold text-base sm:text-lg border border-transparent transition">D. are posting</button>
+                            </div>
+                        </span>
+                        on the school <span class="vocab-word" onclick="showVocab('website')">website</span> next week.
+                    </p>
+                </div>
+
+                <!-- Integrated Accordion for Explanations Part 2 -->
+                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-2xs">
+                    <button onclick="toggleAccordion('part2-explain')" class="w-full px-6 py-4 bg-slate-100 hover:bg-slate-200 transition text-left font-extrabold text-slate-800 text-base sm:text-lg flex justify-between items-center">
+                        <span class="flex items-center"><i class="fa-solid fa-circle-info text-emerald-600 mr-2 text-xl"></i> Xem giải thích đáp án Part 2 (Câu 6 - 11)</span>
+                        <i id="part2-explain-icon" class="fa-solid fa-chevron-down transition-transform duration-200"></i>
+                    </button>
+                    <div id="part2-explain" class="hidden p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-slate-50/50 border-t border-slate-200">
+                        <div class="p-3 bg-white border border-slate-200 rounded-xl shadow-2xs">
+                            <span class="font-bold text-emerald-800 text-base">Câu 6: D. safely</span>
+                            <p class="text-slate-600 text-sm mt-1"><strong>Trạng từ:</strong> <em>safely</em> bổ nghĩa cho động từ "ride".</p>
+                        </div>
+                        <div class="p-3 bg-white border border-slate-200 rounded-xl shadow-2xs">
+                            <span class="font-bold text-emerald-800 text-base">Câu 7: A. blue cotton</span>
+                            <p class="text-slate-600 text-sm mt-1"><strong>Trật tự tính từ:</strong> Color (blue) trước Material (cotton).</p>
+                        </div>
+                        <div class="p-3 bg-white border border-slate-200 rounded-xl shadow-2xs">
+                            <span class="font-bold text-emerald-800 text-base">Câu 8: C. for</span>
+                            <p class="text-slate-600 text-sm mt-1"><strong>Cấu trúc:</strong> <em>be responsible for</em> (chịu trách nhiệm).</p>
+                        </div>
+                        <div class="p-3 bg-white border border-slate-200 rounded-xl shadow-2xs">
+                            <span class="font-bold text-emerald-800 text-base">Câu 9: D. because</span>
+                            <p class="text-slate-600 text-sm mt-1"><strong>Liên từ:</strong> <em>because</em> (bởi vì) nêu lý do.</p>
+                        </div>
+                        <div class="p-3 bg-white border border-slate-200 rounded-xl shadow-2xs">
+                            <span class="font-bold text-emerald-800 text-base">Câu 10: B. arrives</span>
+                            <p class="text-slate-600 text-sm mt-1"><strong>Mệnh đề thời gian:</strong> <em>Once...</em> chia Hiện tại đơn.</p>
+                        </div>
+                        <div class="p-3 bg-white border border-slate-200 rounded-xl shadow-2xs">
+                            <span class="font-bold text-emerald-800 text-base">Câu 11: C. will be posted</span>
+                            <p class="text-slate-600 text-sm mt-1"><strong>Bị động tương lai:</strong> <em>will be + V3/ed</em>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 3: READING COMPREHENSION -->
+        <section id="part3" class="scroll-mt-36 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="bg-slate-100/90 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
+                <h2 class="font-extrabold text-slate-900 text-base sm:text-xl flex items-center">
+                    <span class="w-8 h-8 rounded-full bg-emerald-600 text-white text-sm flex items-center justify-center mr-3 font-bold">3</span>
+                    PART 3. READING COMPREHENSION (CAN GIO MANGROVE FOREST)
+                </h2>
+                <span class="text-xs sm:text-sm text-slate-500 font-semibold">5 câu hỏi</span>
+            </div>
+
+            <!-- Vertical Split View Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-slate-200">
+                <!-- Left Column: Reading Text with Interactive Evidence Highlights -->
+                <div class="lg:col-span-6 p-6 bg-amber-50/20">
+                    <div class="sticky top-36 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="bg-amber-100 text-amber-900 text-xs sm:text-sm px-3 py-1 rounded-md font-bold">
+                                <i class="fa-solid fa-file-lines mr-1.5"></i> Reading Passage
+                            </span>
+                            <span class="text-xs sm:text-sm text-slate-500 font-medium">Bấm "Xem Dẫn Chứng" ở câu hỏi để soi ngay đoạn chứa đáp án!</span>
+                        </div>
+
+                        <div id="passage-container" class="text-slate-800 leading-relaxed text-base sm:text-lg lg:text-xl space-y-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs">
+                            <p id="p1">
+                                Can Gio, a <span class="vocab-word" onclick="showVocab('coastal')">coastal</span> <span class="vocab-word" onclick="showVocab('district')">district</span> in the south of Viet Nam, is home to a large <span class="vocab-word" onclick="showVocab('mangrove')">mangrove</span> forest. These trees <span class="vocab-word" onclick="showVocab('protect')">protect</span> the coast from storms, give <span class="vocab-word" onclick="showVocab('shelter')">shelter</span> to fish, crabs and birds, and help to clean the air. Their roots also hold the soil in place, which stops the riverbanks from being <span class="vocab-word" onclick="showVocab('washed_away')">washed away</span>. <span id="ev-12">Unfortunately, large areas of the forest were <span class="vocab-word" onclick="showVocab('destroyed')">destroyed</span> several <span class="vocab-word" onclick="showVocab('decades')">decades</span> ago, partly because of war and partly because people cut down trees for firewood and shrimp ponds. As a <span class="vocab-word" onclick="showVocab('result')">result</span>, many animals lost their homes, and local villagers were left without protection when strong <span class="vocab-word" onclick="showVocab('waves')">waves</span> hit the shore.</span>
+                            </p>
+                            <p id="p2">
+                                Fortunately, the situation has <span class="vocab-word" onclick="showVocab('gradually')">gradually</span> <span class="vocab-word" onclick="showVocab('improved')">improved</span>. The local <span class="vocab-word" onclick="showVocab('authorities')">authorities</span> have <span class="vocab-word" onclick="showVocab('launched')">launched</span> a <span class="vocab-word" onclick="showVocab('replanting')">replanting</span> programme, and thousands of <span class="vocab-word" onclick="showVocab('volunteers')">volunteers</span> have planted young trees along the riverbanks. Schools also play an important role: <span id="ev-14-15">every year, students are taken to the forest to learn about its <span class="vocab-word" onclick="showVocab('value')">value</span>, and many of them help to plant new trees.</span> Local people, who once cut the trees, now earn their living by <span class="vocab-word" onclick="showVocab('guiding')">guiding</span> visitors. <span id="ev-15-A">Tourists can ride small boats through the green <span class="vocab-word" onclick="showVocab('tunnels')">tunnels</span> of leaves, but they are not allowed to pick flowers or leave rubbish behind.</span> Thanks to these combined efforts, the forest has <span class="vocab-word" onclick="showVocab('recovered')">recovered</span>, and it is now seen as a natural <span class="vocab-word" onclick="showVocab('treasure')">treasure</span> for both people and <span class="vocab-word" onclick="showVocab('wildlife')">wildlife</span>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Q12 - Q16 -->
+                <div class="lg:col-span-6 p-6 space-y-6">
+                    <!-- Q12 -->
+                    <div class="question-card bg-white p-5 rounded-xl border border-slate-200 shadow-2xs" id="q-box-12" data-q="12">
+                        <p class="font-extrabold text-slate-900 text-base sm:text-lg mb-3">Question 12. According to paragraph 1, what happened to many animals when parts of the forest were destroyed?</p>
+                        <div class="space-y-2.5 mb-4">
+                            <button onclick="selectOption(12, 'A')" id="q12-A" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 w-full transition">A. They lost their homes.</button>
+                            <button onclick="selectOption(12, 'B')" id="q12-B" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 w-full transition">B. They moved into the villages.</button>
+                            <button onclick="selectOption(12, 'C')" id="q12-C" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 w-full transition">C. They were caught by tourists.</button>
+                            <button onclick="selectOption(12, 'D')" id="q12-D" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 w-full transition">D. They had to live in shrimp ponds.</button>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <button onclick="checkQuestion(12)" class="text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold transition flex items-center shadow-xs">
+                                <i class="fa-solid fa-check-circle mr-1.5"></i> Check Đáp Án
+                            </button>
+                            <button onclick="highlightEvidence('ev-12')" class="text-sm sm:text-base bg-amber-100 hover:bg-amber-200 text-amber-900 px-3.5 py-2 rounded-lg font-bold transition border border-amber-300">
+                                <i class="fa-solid fa-magnifying-glass mr-1.5"></i> Xem dẫn chứng
+                            </button>
+                        </div>
+                        <div id="explain-12" class="hidden mt-4 p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-sm sm:text-base text-emerald-950 space-y-1">
+                            <p class="font-extrabold text-emerald-800">Chính xác: A. They lost their homes.</p>
+                            <p><strong>Dẫn chứng trong đoạn 1:</strong> "As a result, many animals lost their homes..." (Kết quả là, nhiều loài động vật bị mất nơi sinh sống).</p>
+                        </div>
+                    </div>
+
+                    <!-- Q13 -->
+                    <div class="question-card bg-white p-5 rounded-xl border border-slate-200 shadow-2xs" id="q-box-13" data-q="13">
+                        <p class="font-extrabold text-slate-900 text-base sm:text-lg mb-3">Question 13. The word “launched” in paragraph 2 is closest in meaning to ________.</p>
+                        <div class="grid grid-cols-2 gap-3 mb-4">
+                            <button onclick="selectOption(13, 'A')" id="q13-A" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition">A. stopped</button>
+                            <button onclick="selectOption(13, 'B')" id="q13-B" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition">B. avoided</button>
+                            <button onclick="selectOption(13, 'C')" id="q13-C" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition">C. delayed</button>
+                            <button onclick="selectOption(13, 'D')" id="q13-D" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition">D. started</button>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <button onclick="checkQuestion(13)" class="text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold transition flex items-center shadow-xs">
+                                <i class="fa-solid fa-check-circle mr-1.5"></i> Check Đáp Án
+                            </button>
+                        </div>
+                        <div id="explain-13" class="hidden mt-4 p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-sm sm:text-base text-emerald-950 space-y-1">
+                            <p class="font-extrabold text-emerald-800">Chính xác: D. started</p>
+                            <p><strong>Giải thích:</strong> Từ <em>launched</em> (phát động/khởi xướng) đồng nghĩa với <em>started</em> (bắt đầu).</p>
+                        </div>
+                    </div>
+
+                    <!-- Q14 -->
+                    <div class="question-card bg-white p-5 rounded-xl border border-slate-200 shadow-2xs" id="q-box-14" data-q="14">
+                        <p class="font-extrabold text-slate-900 text-base sm:text-lg mb-3">Question 14. The word “them” in paragraph 2 refers to ________.</p>
+                        <div class="grid grid-cols-2 gap-3 mb-4">
+                            <button onclick="selectOption(14, 'A')" id="q14-A" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition">A. schools</button>
+                            <button onclick="selectOption(14, 'B')" id="q14-B" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition">B. students</button>
+                            <button onclick="selectOption(14, 'C')" id="q14-C" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition">C. visitors</button>
+                            <button onclick="selectOption(14, 'D')" id="q14-D" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition">D. volunteers</button>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <button onclick="checkQuestion(14)" class="text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold transition flex items-center shadow-xs">
+                                <i class="fa-solid fa-check-circle mr-1.5"></i> Check Đáp Án
+                            </button>
+                            <button onclick="highlightEvidence('ev-14-15')" class="text-sm sm:text-base bg-amber-100 hover:bg-amber-200 text-amber-900 px-3.5 py-2 rounded-lg font-bold transition border border-amber-300">
+                                <i class="fa-solid fa-magnifying-glass mr-1.5"></i> Xem dẫn chứng
+                            </button>
+                        </div>
+                        <div id="explain-14" class="hidden mt-4 p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-sm sm:text-base text-emerald-950 space-y-1">
+                            <p class="font-extrabold text-emerald-800">Chính xác: B. students</p>
+                            <p><strong>Dẫn chứng:</strong> "...students are taken to the forest to learn about its value, and many of <strong>them</strong> help..." -> đại từ "them" thay thế cho "students".</p>
+                        </div>
+                    </div>
+
+                    <!-- Q15 -->
+                    <div class="question-card bg-white p-5 rounded-xl border border-slate-200 shadow-2xs" id="q-box-15" data-q="15">
+                        <p class="font-extrabold text-slate-900 text-base sm:text-lg mb-3">Question 15. According to paragraph 2, which of the following is TRUE?</p>
+                        <div class="space-y-2.5 mb-4">
+                            <button onclick="selectOption(15, 'A')" id="q15-A" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 w-full transition">A. Tourists are allowed to pick flowers in the forest.</button>
+                            <button onclick="selectOption(15, 'B')" id="q15-B" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 w-full transition">B. Only volunteers have planted trees along the riverbanks.</button>
+                            <button onclick="selectOption(15, 'C')" id="q15-C" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 w-full transition">C. Students go to the forest every year to learn about its value.</button>
+                            <button onclick="selectOption(15, 'D')" id="q15-D" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 w-full transition">D. The forest has not recovered yet after several natural disasters.</button>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <button onclick="checkQuestion(15)" class="text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold transition flex items-center shadow-xs">
+                                <i class="fa-solid fa-check-circle mr-1.5"></i> Check Đáp Án
+                            </button>
+                            <button onclick="highlightEvidence('ev-14-15')" class="text-sm sm:text-base bg-amber-100 hover:bg-amber-200 text-amber-900 px-3.5 py-2 rounded-lg font-bold transition border border-amber-300">
+                                <i class="fa-solid fa-magnifying-glass mr-1.5"></i> Xem dẫn chứng C
+                            </button>
+                        </div>
+                        <div id="explain-15" class="hidden mt-4 p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-sm sm:text-base text-emerald-950 space-y-1">
+                            <p class="font-extrabold text-emerald-800">Chính xác: C. Students go to the forest every year to learn about its value.</p>
+                            <p><strong>Dẫn chứng:</strong> "...every year, students are taken to the forest to learn about its value..." là câu duy nhất ĐÚNG.</p>
+                        </div>
+                    </div>
+
+                    <!-- Q16 -->
+                    <div class="question-card bg-white p-5 rounded-xl border border-slate-200 shadow-2xs" id="q-box-16" data-q="16">
+                        <p class="font-extrabold text-slate-900 text-base sm:text-lg mb-3">Question 16. Which of the following can be the best title for the passage?</p>
+                        <div class="space-y-2.5 mb-4">
+                            <button onclick="selectOption(16, 'A')" id="q16-A" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 w-full transition">A. Rebuilding Forest: People Helping Nature Recover</button>
+                            <button onclick="selectOption(16, 'B')" id="q16-B" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 w-full transition">B. Shrimp Farming: A Profitable Job for Villagers</button>
+                            <button onclick="selectOption(16, 'C')" id="q16-C" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 w-full transition">C. Boat Trips: The Best Way to Enjoy Can Gio</button>
+                            <button onclick="selectOption(16, 'D')" id="q16-D" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 w-full transition">D. Why Coastal Storms Are Getting Stronger</button>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <button onclick="checkQuestion(16)" class="text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold transition flex items-center shadow-xs">
+                                <i class="fa-solid fa-check-circle mr-1.5"></i> Check Đáp Án
+                            </button>
+                        </div>
+                        <div id="explain-16" class="hidden mt-4 p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-sm sm:text-base text-emerald-950 space-y-1">
+                            <p class="font-extrabold text-emerald-800">Chính xác: A. Rebuilding Forest: People Helping Nature Recover</p>
+                            <p><strong>Giải thích:</strong> Tiêu đề bao quát toàn bài nói về quá trình khôi phục rừng ngập mặn Cần Giờ nhờ sự góp sức của con người.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 4: SENTENCE ARRANGEMENT -->
+        <section id="part4" class="scroll-mt-36 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-8">
+            <div class="border-b border-slate-200 pb-4 flex justify-between items-center">
+                <h2 class="font-extrabold text-slate-900 text-base sm:text-xl flex items-center">
+                    <span class="w-8 h-8 rounded-full bg-emerald-600 text-white text-sm flex items-center justify-center mr-3 font-bold">4</span>
+                    PART 4. SENTENCE ARRANGEMENT
+                </h2>
+                <span class="text-xs sm:text-sm text-slate-500 font-semibold">4 câu hỏi</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Q17 -->
+                <div class="question-card bg-slate-50/60 p-5 rounded-2xl border border-slate-200" id="q-box-17" data-q="17">
+                    <p class="font-extrabold text-slate-900 text-base sm:text-lg mb-3">Question 17.</p>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 text-base sm:text-lg text-slate-800 space-y-2 mb-4">
+                        <p>a. Hung: Sure, Mum. Should I wash the vegetables first?</p>
+                        <p>b. Mum: Hung, could you <span class="vocab-word" onclick="showVocab('prepare')">help</span> me prepare dinner tonight?</p>
+                        <p>c. Mum: Yes, please. Then cut them into small pieces.</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <button onclick="selectOption(17, 'A')" id="q17-A" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition">A. a – b – c</button>
+                        <button onclick="selectOption(17, 'B')" id="q17-B" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition">B. c – b – a</button>
+                        <button onclick="selectOption(17, 'C')" id="q17-C" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition">C. b – c – a</button>
+                        <button onclick="selectOption(17, 'D')" id="q17-D" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition">D. b – a – c</button>
+                    </div>
+                    <button onclick="checkQuestion(17)" class="text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold transition flex items-center shadow-xs">
+                        <i class="fa-solid fa-check-circle mr-1.5"></i> Check Đáp Án
+                    </button>
+                    <div id="explain-17" class="hidden mt-4 p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-sm sm:text-base text-emerald-950 space-y-1">
+                        <p class="font-extrabold text-emerald-800">Chính xác: D. b – a – c</p>
+                        <p><strong>Giải thích:</strong> Mẹ nhờ Hùng giúp (b) -> Hùng nhận lời và hỏi bước làm tiếp (a) -> Mẹ hướng dẫn chi tiết (c).</p>
+                    </div>
+                </div>
+
+                <!-- Q18 -->
+                <div class="question-card bg-slate-50/60 p-5 rounded-2xl border border-slate-200" id="q-box-18" data-q="18">
+                    <p class="font-extrabold text-slate-900 text-base sm:text-lg mb-3">Question 18.</p>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 text-base sm:text-lg text-slate-800 space-y-2 mb-4">
+                        <p>a. For example, parents may want their children to come home early, while teenagers want more <span class="vocab-word" onclick="showVocab('freedom')">freedom</span>.</p>
+                        <p>b. Therefore, both sides should listen to each other and try to understand different opinions.</p>
+                        <p>c. <span class="vocab-word" onclick="showVocab('disagreement')">Disagreements</span> between parents and teenagers are common in many families.</p>
+                        <p>d. These different wishes often lead to <span class="vocab-word" onclick="showVocab('arguments')">arguments</span> if nobody is willing to <span class="vocab-word" onclick="showVocab('compromise')">compromise</span>.</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <button onclick="selectOption(18, 'A')" id="q18-A" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition">A. a – c – b – d</button>
+                        <button onclick="selectOption(18, 'B')" id="q18-B" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition">B. c – a – d – b</button>
+                        <button onclick="selectOption(18, 'C')" id="q18-C" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition">C. c – d – a – b</button>
+                        <button onclick="selectOption(18, 'D')" id="q18-D" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition">D. b – a – c – d</button>
+                    </div>
+                    <button onclick="checkQuestion(18)" class="text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold transition flex items-center shadow-xs">
+                        <i class="fa-solid fa-check-circle mr-1.5"></i> Check Đáp Án
+                    </button>
+                    <div id="explain-18" class="hidden mt-4 p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-sm sm:text-base text-emerald-950 space-y-1">
+                        <p class="font-extrabold text-emerald-800">Chính xác: B. c – a – d – b</p>
+                        <p><strong>Giải thích:</strong> Giới thiệu chủ đề bất đồng (c) -> Nêu ví dụ thực tế (a) -> Dẫn đến tranh cãi (d) -> Đưa ra giải pháp khuyên bảo (b).</p>
+                    </div>
+                </div>
+
+                <!-- Q19 -->
+                <div class="question-card bg-slate-50/60 p-5 rounded-2xl border border-slate-200" id="q-box-19" data-q="19">
+                    <p class="font-extrabold text-slate-900 text-base sm:text-lg mb-3">Question 19. Dear Tom,</p>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 text-base sm:text-lg text-slate-800 space-y-2 mb-4">
+                        <p>a. I hope you are doing well.</p>
+                        <p>b. Each member will <span class="vocab-word" onclick="showVocab('collect')">collect</span> plastic bottles and cans around the lake and <span class="vocab-word" onclick="showVocab('sort')">sort</span> them into different bins.</p>
+                        <p>c. Please let me know if you can come.</p>
+                        <p>d. I’m writing to tell you about my school’s new recycling club.</p>
+                        <p>e. We meet at 8 a.m. every Saturday at the school gate.</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <button onclick="selectOption(19, 'A')" id="q19-A" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition">A. e – a – d – b – c</button>
+                        <button onclick="selectOption(19, 'B')" id="q19-B" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition">B. a – e – d – b – c</button>
+                        <button onclick="selectOption(19, 'C')" id="q19-C" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition">C. a – d – e – b – c</button>
+                        <button onclick="selectOption(19, 'D')" id="q19-D" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition">D. d – e – a – c – b</button>
+                    </div>
+                    <button onclick="checkQuestion(19)" class="text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold transition flex items-center shadow-xs">
+                        <i class="fa-solid fa-check-circle mr-1.5"></i> Check Đáp Án
+                    </button>
+                    <div id="explain-19" class="hidden mt-4 p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-sm sm:text-base text-emerald-950 space-y-1">
+                        <p class="font-extrabold text-emerald-800">Chính xác: C. a – d – e – b – c</p>
+                        <p><strong>Giải thích:</strong> Lời chào hỏi thăm (a) -> Mục đích viết thư (d) -> Thời gian/địa điểm (e) -> Hoạt động chi tiết (b) -> Lời mời phản hồi (c).</p>
+                    </div>
+                </div>
+
+                <!-- Q20 -->
+                <div class="question-card bg-slate-50/60 p-5 rounded-2xl border border-slate-200" id="q-box-20" data-q="20">
+                    <p class="font-extrabold text-slate-900 text-base sm:text-lg mb-3">Question 20.</p>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 text-base sm:text-lg text-slate-800 space-y-2 mb-4">
+                        <p>a. However, cutting down trees without replanting can lead to floods and soil <span class="vocab-word" onclick="showVocab('erosion')">erosion</span>.</p>
+                        <p>b. Forests play a <span class="vocab-word" onclick="showVocab('vital')">vital</span> role in our daily lives.</p>
+                        <p>c. They produce the oxygen we breathe and provide homes for thousands of animals.</p>
+                        <p>d. If we act now, future <span class="vocab-word" onclick="showVocab('generations')">generations</span> will still be able to enjoy fresh air and green spaces.</p>
+                        <p>e. For this reason, local communities should plant more trees and protect the <span class="vocab-word" onclick="showVocab('remaining')">remaining</span> forests.</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <button onclick="selectOption(20, 'A')" id="q20-A" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition">A. b – c – a – e – d</button>
+                        <button onclick="selectOption(20, 'B')" id="q20-B" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition">B. b – a – c – d – e</button>
+                        <button onclick="selectOption(20, 'C')" id="q20-C" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition">C. c – b – a – e – d</button>
+                        <button onclick="selectOption(20, 'D')" id="q20-D" class="opt-btn text-left p-3 text-base sm:text-lg font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition">D. b – c – e – a – d</button>
+                    </div>
+                    <button onclick="checkQuestion(20)" class="text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold transition flex items-center shadow-xs">
+                        <i class="fa-solid fa-check-circle mr-1.5"></i> Check Đáp Án
+                    </button>
+                    <div id="explain-20" class="hidden mt-4 p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-sm sm:text-base text-emerald-950 space-y-1">
+                        <p class="font-extrabold text-emerald-800">Chính xác: A. b – c – a – e – d</p>
+                        <p><strong>Giải thích:</strong> Giới thiệu tầm quan trọng của rừng (b) -> Chi tiết lợi ích (c) -> Cảnh báo nguy cơ phá rừng (a) -> Giải pháp bảo vệ (e) -> Tương lai tích cực (d).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PART 5: WRITING SECTION -->
+        <section id="part5" class="scroll-mt-36 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-8">
+            <div class="border-b border-slate-200 pb-4 flex justify-between items-center">
+                <h2 class="font-extrabold text-slate-900 text-base sm:text-xl flex items-center">
+                    <span class="w-8 h-8 rounded-full bg-emerald-600 text-white text-sm flex items-center justify-center mr-3 font-bold">5</span>
+                    PART 5. WRITING SECTION
+                </h2>
+                <span class="text-xs sm:text-sm text-slate-500 font-semibold">10 câu hỏi</span>
+            </div>
+
+            <!-- Subsection A: Sentence Rephrase -->
+            <div class="space-y-6">
+                <h3 class="text-sm sm:text-base font-extrabold text-slate-800 uppercase tracking-wider bg-slate-100 px-4 py-2 rounded-lg inline-block border border-slate-200">
+                    A. Rewrite using the word in brackets (2 Questions)
+                </h3>
+
+                <!-- Q21 -->
+                <div class="question-card border border-slate-200 rounded-xl p-5 bg-white shadow-2xs space-y-3" id="q-box-21">
+                    <p class="font-bold text-slate-900 text-base sm:text-lg lg:text-xl">
+                        Question 21. My parents plan to repaint the kitchen this summer. <span class="text-emerald-700 font-extrabold">(GOING)</span>
+                    </p>
+                    <div class="space-y-3">
+                        <input type="text" id="q21-input" placeholder="Nhập câu viết lại hoàn chỉnh của bạn..." class="w-full text-base sm:text-lg p-3.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium">
+                        <button onclick="checkWriting(21)" class="text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold transition flex items-center shadow-xs">
+                            <i class="fa-solid fa-check-circle mr-1.5"></i> Check Đáp Án
+                        </button>
+                        <div id="explain-21" class="hidden p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-sm sm:text-base text-emerald-950 space-y-1">
+                            <p class="font-extrabold text-emerald-800">Đáp án chuẩn:</p>
+                            <p class="text-emerald-900 font-bold text-base sm:text-lg">My parents are going to repaint the kitchen this summer.</p>
+                            <p class="text-slate-700 mt-1"><strong>Cấu trúc:</strong> <em>plan to V = be going to V</em> (dự định làm gì).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q22 -->
+                <div class="question-card border border-slate-200 rounded-xl p-5 bg-white shadow-2xs space-y-3" id="q-box-22">
+                    <p class="font-bold text-slate-900 text-base sm:text-lg lg:text-xl">
+                        Question 22. I’ve decided to visit my uncle in Hanoi next summer. <span class="text-emerald-700 font-extrabold">(GOING)</span>
+                    </p>
+                    <div class="space-y-3">
+                        <input type="text" id="q22-input" placeholder="Nhập câu viết lại hoàn chỉnh của bạn..." class="w-full text-base sm:text-lg p-3.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium">
+                        <button onclick="checkWriting(22)" class="text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold transition flex items-center shadow-xs">
+                            <i class="fa-solid fa-check-circle mr-1.5"></i> Check Đáp Án
+                        </button>
+                        <div id="explain-22" class="hidden p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-sm sm:text-base text-emerald-950 space-y-1">
+                            <p class="font-extrabold text-emerald-800">Đáp án chuẩn:</p>
+                            <p class="text-emerald-900 font-bold text-base sm:text-lg">I am going to visit my uncle in Hanoi next summer.</p>
+                            <p class="text-slate-700 mt-1"><strong>Cấu trúc:</strong> <em>have decided to V = am/is/are going to V</em>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subsection B: Passive Voice -->
+            <div class="space-y-6 pt-6 border-t border-slate-200">
+                <h3 class="text-sm sm:text-base font-extrabold text-slate-800 uppercase tracking-wider bg-slate-100 px-4 py-2 rounded-lg inline-block border border-slate-200">
+                    B. Change sentences into Passive Voice (8 Questions)
+                </h3>
+
+                <!-- Q23 -->
+                <div class="question-card border border-slate-200 rounded-xl p-5 bg-white shadow-2xs space-y-3" id="q-box-23">
+                    <p class="font-bold text-slate-900 text-base sm:text-lg lg:text-xl">Question 23. People collect plastic bottles in this area every week.</p>
+                    <div class="text-emerald-800 font-bold text-sm sm:text-base">Gợi ý bắt đầu: Plastic bottles...</div>
+                    <div class="space-y-3">
+                        <input type="text" id="q23-input" placeholder="Viết tiếp vế còn lại của câu..." class="w-full text-base sm:text-lg p-3.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium">
+                        <button onclick="checkWriting(23)" class="text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold transition flex items-center shadow-xs">
+                            <i class="fa-solid fa-check-circle mr-1.5"></i> Check Đáp Án
+                        </button>
+                        <div id="explain-23" class="hidden p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-sm sm:text-base text-emerald-950 space-y-1">
+                            <p class="font-extrabold text-emerald-800">Đáp án chuẩn:</p>
+                            <p class="text-emerald-900 font-bold text-base sm:text-lg">Plastic bottles are collected in this area every week.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q24 -->
+                <div class="question-card border border-slate-200 rounded-xl p-5 bg-white shadow-2xs space-y-3" id="q-box-24">
+                    <p class="font-bold text-slate-900 text-base sm:text-lg lg:text-xl">Question 24. The workers are cleaning the river bank at the moment.</p>
+                    <div class="text-emerald-800 font-bold text-sm sm:text-base">Gợi ý bắt đầu: The river bank...</div>
+                    <div class="space-y-3">
+                        <input type="text" id="q24-input" placeholder="Viết tiếp vế còn lại của câu..." class="w-full text-base sm:text-lg p-3.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium">
+                        <button onclick="checkWriting(24)" class="text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold transition flex items-center shadow-xs">
+                            <i class="fa-solid fa-check-circle mr-1.5"></i> Check Đáp Án
+                        </button>
+                        <div id="explain-24" class="hidden p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-sm sm:text-base text-emerald-950 space-y-1">
+                            <p class="font-extrabold text-emerald-800">Đáp án chuẩn:</p>
+                            <p class="text-emerald-900 font-bold text-base sm:text-lg">The river bank is being cleaned by the workers at the moment.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q25 -->
+                <div class="question-card border border-slate-200 rounded-xl p-5 bg-white shadow-2xs space-y-3" id="q-box-25">
+                    <p class="font-bold text-slate-900 text-base sm:text-lg lg:text-xl">Question 25. My grandmother made this scarf from recycled wool last winter.</p>
+                    <div class="text-emerald-800 font-bold text-sm sm:text-base">Gợi ý bắt đầu: This scarf...</div>
+                    <div class="space-y-3">
+                        <input type="text" id="q25-input" placeholder="Viết tiếp vế còn lại của câu..." class="w-full text-base sm:text-lg p-3.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium">
+                        <button onclick="checkWriting(25)" class="text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold transition flex items-center shadow-xs">
+                            <i class="fa-solid fa-check-circle mr-1.5"></i> Check Đáp Án
+                        </button>
+                        <div id="explain-25" class="hidden p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-sm sm:text-base text-emerald-950 space-y-1">
+                            <p class="font-extrabold text-emerald-800">Đáp án chuẩn:</p>
+                            <p class="text-emerald-900 font-bold text-base sm:text-lg">This scarf was made from recycled wool by my grandmother last winter.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q26 -->
+                <div class="question-card border border-slate-200 rounded-xl p-5 bg-white shadow-2xs space-y-3" id="q-box-26">
+                    <p class="font-bold text-slate-900 text-base sm:text-lg lg:text-xl">Question 26. The city council has already banned plastic bags.</p>
+                    <div class="text-emerald-800 font-bold text-sm sm:text-base">Gợi ý bắt đầu: Plastic bags...</div>
+                    <div class="space-y-3">
+                        <input type="text" id="q26-input" placeholder="Viết tiếp vế còn lại của câu..." class="w-full text-base sm:text-lg p-3.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium">
+                        <button onclick="checkWriting(26)" class="text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold transition flex items-center shadow-xs">
+                            <i class="fa-solid fa-check-circle mr-1.5"></i> Check Đáp Án
+                        </button>
+                        <div id="explain-26" class="hidden p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-sm sm:text-base text-emerald-950 space-y-1">
+                            <p class="font-extrabold text-emerald-800">Đáp án chuẩn:</p>
+                            <p class="text-emerald-900 font-bold text-base sm:text-lg">Plastic bags have already been banned by the city council.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q27 -->
+                <div class="question-card border border-slate-200 rounded-xl p-5 bg-white shadow-2xs space-y-3" id="q-box-27">
+                    <p class="font-bold text-slate-900 text-base sm:text-lg lg:text-xl">Question 27. Volunteers will plant five hundred trees along the canal next month.</p>
+                    <div class="text-emerald-800 font-bold text-sm sm:text-base">Gợi ý bắt đầu: Five hundred trees...</div>
+                    <div class="space-y-3">
+                        <input type="text" id="q27-input" placeholder="Viết tiếp vế còn lại của câu..." class="w-full text-base sm:text-lg p-3.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium">
+                        <button onclick="checkWriting(27)" class="text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold transition flex items-center shadow-xs">
+                            <i class="fa-solid fa-check-circle mr-1.5"></i> Check Đáp Án
+                        </button>
+                        <div id="explain-27" class="hidden p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-sm sm:text-base text-emerald-950 space-y-1">
+                            <p class="font-extrabold text-emerald-800">Đáp án chuẩn:</p>
+                            <p class="text-emerald-900 font-bold text-base sm:text-lg">Five hundred trees will be planted along the canal next month by volunteers.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q28 -->
+                <div class="question-card border border-slate-200 rounded-xl p-5 bg-white shadow-2xs space-y-3" id="q-box-28">
+                    <p class="font-bold text-slate-900 text-base sm:text-lg lg:text-xl">Question 28. We must keep the classroom clean.</p>
+                    <div class="text-emerald-800 font-bold text-sm sm:text-base">Gợi ý bắt đầu: The classroom...</div>
+                    <div class="space-y-3">
+                        <input type="text" id="q28-input" placeholder="Viết tiếp vế còn lại của câu..." class="w-full text-base sm:text-lg p-3.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium">
+                        <button onclick="checkWriting(28)" class="text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold transition flex items-center shadow-xs">
+                            <i class="fa-solid fa-check-circle mr-1.5"></i> Check Đáp Án
+                        </button>
+                        <div id="explain-28" class="hidden p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-sm sm:text-base text-emerald-950 space-y-1">
+                            <p class="font-extrabold text-emerald-800">Đáp án chuẩn:</p>
+                            <p class="text-emerald-900 font-bold text-base sm:text-lg">The classroom must be kept clean.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q29 -->
+                <div class="question-card border border-slate-200 rounded-xl p-5 bg-white shadow-2xs space-y-3" id="q-box-29">
+                    <p class="font-bold text-slate-900 text-base sm:text-lg lg:text-xl">Question 29. The teacher gave each student a reusable bottle.</p>
+                    <div class="text-emerald-800 font-bold text-sm sm:text-base">Gợi ý bắt đầu: Each student...</div>
+                    <div class="space-y-3">
+                        <input type="text" id="q29-input" placeholder="Viết tiếp vế còn lại của câu..." class="w-full text-base sm:text-lg p-3.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium">
+                        <button onclick="checkWriting(29)" class="text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold transition flex items-center shadow-xs">
+                            <i class="fa-solid fa-check-circle mr-1.5"></i> Check Đáp Án
+                        </button>
+                        <div id="explain-29" class="hidden p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-sm sm:text-base text-emerald-950 space-y-1">
+                            <p class="font-extrabold text-emerald-800">Đáp án chuẩn:</p>
+                            <p class="text-emerald-900 font-bold text-base sm:text-lg">Each student was given a reusable bottle by the teacher.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q30 -->
+                <div class="question-card border border-slate-200 rounded-xl p-5 bg-white shadow-2xs space-y-3" id="q-box-30">
+                    <p class="font-bold text-slate-900 text-base sm:text-lg lg:text-xl">Question 30. The city is going to build a new recycling centre next year.</p>
+                    <div class="text-emerald-800 font-bold text-sm sm:text-base">Gợi ý bắt đầu: A new recycling centre...</div>
+                    <div class="space-y-3">
+                        <input type="text" id="q30-input" placeholder="Viết tiếp vế còn lại của câu..." class="w-full text-base sm:text-lg p-3.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium">
+                        <button onclick="checkWriting(30)" class="text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-bold transition flex items-center shadow-xs">
+                            <i class="fa-solid fa-check-circle mr-1.5"></i> Check Đáp Án
+                        </button>
+                        <div id="explain-30" class="hidden p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-sm sm:text-base text-emerald-950 space-y-1">
+                            <p class="font-extrabold text-emerald-800">Đáp án chuẩn:</p>
+                            <p class="text-emerald-900 font-bold text-base sm:text-lg">A new recycling centre is going to be built next year.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    <!-- Large Text Explanation Modal for TV/Classroom Display -->
+    <div id="explanation-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl shadow-2xl border-4 border-amber-400 max-w-2xl w-full p-8 space-y-6 relative transform transition-all">
+            <button onclick="closeExplainModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 w-12 h-12 rounded-full flex items-center justify-center bg-slate-100 hover:bg-slate-200 transition text-2xl font-bold">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            
+            <div class="flex items-center space-x-4 border-b border-slate-200 pb-5">
+                <div class="w-14 h-14 rounded-2xl bg-amber-500 text-white flex items-center justify-center text-3xl font-black shadow-md">
+                    !
+                </div>
+                <div>
+                    <h3 id="exp-modal-title" class="font-extrabold text-slate-900 text-2xl sm:text-3xl">Giải Thích Chi Tiết</h3>
+                    <p class="text-sm sm:text-base text-amber-800 font-bold">Hướng dẫn đáp án & Cấu trúc quan trọng</p>
+                </div>
+            </div>
+
+            <div class="bg-amber-50/90 p-6 rounded-2xl border-2 border-amber-200 space-y-3">
+                <div class="flex items-center space-x-2 text-emerald-800 font-extrabold text-xl sm:text-2xl" id="exp-modal-answer">
+                    <!-- Answer details -->
+                </div>
+                <div id="exp-modal-detail" class="text-slate-900 text-xl sm:text-2xl lg:text-3xl font-bold leading-relaxed pt-2">
+                    <!-- Detailed explanation text -->
+                </div>
+            </div>
+
+            <div class="flex justify-end pt-2">
+                <button onclick="closeExplainModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-lg sm:text-xl px-8 py-3.5 rounded-xl shadow-md transition transform active:scale-95">
+                    <i class="fa-solid fa-check mr-2"></i> Đã Hiểu
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Concise Vocabulary Pop-up Modal -->
+    <div id="vocab-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-md w-full p-6 space-y-5 relative">
+            <button onclick="closeVocab()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 w-10 h-10 rounded-full flex items-center justify-center bg-slate-100 hover:bg-slate-200 transition">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="flex items-center space-x-3.5 border-b border-slate-200 pb-4">
+                <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-xl font-bold">
+                    <i class="fa-solid fa-spell-check"></i>
+                </div>
+                <div>
+                    <h4 id="v-word" class="font-extrabold text-slate-900 text-2xl capitalize">Word</h4>
+                    <span id="v-type" class="text-sm text-amber-900 font-bold italic">/phonetic/ • noun</span>
+                </div>
+            </div>
+            <div class="space-y-3 text-slate-800">
+                <div class="bg-amber-50/80 p-4 rounded-xl border border-amber-200">
+                    <p class="text-xs font-bold text-amber-900 uppercase tracking-wider mb-1.5">Nghĩa tiếng Việt:</p>
+                    <p id="v-meaning" class="font-extrabold text-slate-900 text-xl sm:text-2xl leading-snug">Nghĩa tiếng Việt ở đây</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Answer Key Database
+        const answerKeys = {
+            1: 'C', 2: 'D', 3: 'B', 4: 'B', 5: 'A',
+            6: 'D', 7: 'A', 8: 'C', 9: 'D', 10: 'B', 11: 'C',
+            12: 'A', 13: 'D', 14: 'B', 15: 'C', 16: 'A',
+            17: 'D', 18: 'B', 19: 'C', 20: 'A'
+        };
+
+        // Full Detailed Explanation Dictionary for All Questions (Large TV Font Pop-up)
+        const explanationsData = {
+            1: { title: "Câu 1: C. does", answer: "Đáp án đúng: C. does", detail: "Cụm từ cố định (Collocation): <span class='text-amber-900 font-black underline'>do housework</span> = làm việc nhà." },
+            2: { title: "Câu 2: D. responsibility", answer: "Đáp án đúng: D. responsibility", detail: "Cấu trúc: <span class='text-amber-900 font-black underline'>take responsibility for</span> = nhận / chịu trách nhiệm cho công việc." },
+            3: { title: "Câu 3: B. gives", answer: "Đáp án đúng: B. gives", detail: "Cụm từ: <span class='text-amber-900 font-black underline'>give somebody free time</span> = dành cho ai thời gian rảnh rỗi." },
+            4: { title: "Câu 4: B. Moreover", answer: "Đáp án đúng: B. Moreover", detail: "Từ nối (Linking word): <span class='text-amber-900 font-black underline'>Moreover</span> (Hơn thế nữa) dùng để bổ sung thêm ý kiến/lợi ích tiếp theo." },
+            5: { title: "Câu 5: A. remind", answer: "Đáp án đúng: A. remind", detail: "Cấu trúc: <span class='text-amber-900 font-black underline'>remind somebody to do something</span> = nhắc nhở ai làm gì." },
+            6: { title: "Câu 6: D. safely", answer: "Đáp án đúng: D. safely", detail: "Trạng từ (Adverb): <span class='text-amber-900 font-black underline'>safely</span> bổ nghĩa cho động từ 'ride' (đạp xe một cách an toàn)." },
+            7: { title: "Câu 7: A. blue cotton", answer: "Đáp án đúng: A. blue cotton", detail: "Trật tự tính từ OSASCOMP: Color (<span class='text-amber-900 font-black underline'>blue</span> - màu sắc) đứng trước Material (<span class='text-amber-900 font-black underline'>cotton</span> - chất liệu)." },
+            8: { title: "Câu 8: C. for", answer: "Đáp án đúng: C. for", detail: "Cấu trúc: <span class='text-amber-900 font-black underline'>be responsible for something</span> = chịu trách nhiệm cho cái gì." },
+            9: { title: "Câu 9: D. because", answer: "Đáp án đúng: D. because", detail: "Liên từ (Conjunction): <span class='text-amber-900 font-black underline'>because</span> (bởi vì) giải thích lý do phải đội mũ bảo hiểm." },
+            10: { title: "Câu 10: B. arrives", answer: "Đáp án đúng: B. arrives", detail: "Mệnh đề thời gian: <span class='text-amber-900 font-black underline'>Once + S + V(hiện tại đơn)</span>, vế sau chia tương lai đơn." },
+            11: { title: "Câu 11: C. will be posted", answer: "Đáp án đúng: C. will be posted", detail: "Bị động thì Tương lai đơn: <span class='text-amber-900 font-black underline'>will be + V3/ed</span> (những bức ảnh đẹp nhất sẽ được đăng tải)." },
+            12: { title: "Câu 12: A. They lost their homes.", answer: "Đáp án đúng: A", detail: "Dẫn chứng ở đoạn 1: 'As a result, many animals lost their homes...' (Kết quả là nhiều loài động vật mất nhà cửa)." },
+            13: { title: "Câu 13: D. started", answer: "Đáp án đúng: D. started", detail: "Từ vựng: <span class='text-amber-900 font-black underline'>launched</span> (phát động, bắt đầu) đồng nghĩa với <span class='text-amber-900 font-black underline'>started</span>." },
+            14: { title: "Câu 14: B. students", answer: "Đáp án đúng: B. students", detail: "Đại từ: '<span class='text-amber-900 font-black underline'>them</span>' thay thế cho danh từ 'students' ở vế ngay trước đó." },
+            15: { title: "Câu 15: C. Students go to the forest every year...", answer: "Đáp án đúng: C", detail: "Dẫn chứng ở đoạn 2: '...every year, students are taken to the forest to learn about its value...' (hàng năm học sinh được đến rừng để học)." },
+            16: { title: "Câu 16: A. Rebuilding Forest: People Helping Nature Recover", answer: "Đáp án đúng: A", detail: "Tiêu đề phù hợp nhất: Trồng lại rừng - Con người giúp thiên nhiên phục hồi." },
+            17: { title: "Câu 17: D. b – a – c", answer: "Đáp án đúng: D", detail: "Mẹ nhờ giúp (b) ➔ Hùng nhận lời & hỏi bước tiếp (a) ➔ Mẹ hướng dẫn chi tiết (c)." },
+            18: { title: "Câu 18: B. c – a – d – b", answer: "Đáp án đúng: B", detail: "Nêu vấn đề xung đột (c) ➔ Ví dụ (a) ➔ Hậu quả tranh cãi (d) ➔ Lời khuyên/giải pháp (b)." },
+            19: { title: "Câu 19: C. a – d – e – b – c", answer: "Đáp án đúng: C", detail: "Hỏi thăm (a) ➔ Mục đích viết thư (d) ➔ Thời gian (e) ➔ Hoạt động (b) ➔ Lời mời (c)." },
+            20: { title: "Câu 20: A. b – c – a – e – d", answer: "Đáp án đúng: A", detail: "Vai trò của rừng (b) ➔ Lợi ích (c) ➔ Cảnh báo nguy cơ (a) ➔ Hành động bảo vệ (e) ➔ Tương lai tươi sáng (d)." }
+        };
+
+        // Writing Question Key Matches
+        const writingKeys = {
+            21: ["my parents are going to repaint the kitchen this summer", "my parents are going to repaint the kitchen this summer."],
+            22: ["i am going to visit my uncle in hanoi next summer", "i'm going to visit my uncle in hanoi next summer", "i am going to visit my uncle in hanoi next summer.", "i'm going to visit my uncle in hanoi next summer."],
+            23: ["plastic bottles are collected in this area every week", "are collected in this area every week", "are collected in this area every week."],
+            24: ["the river bank is being cleaned by the workers at the moment", "is being cleaned by the workers at the moment", "the river bank is being cleaned at the moment", "is being cleaned at the moment", "is being cleaned by the workers at the moment.", "is being cleaned at the moment."],
+            25: ["this scarf was made from recycled wool by my grandmother last winter", "was made from recycled wool by my grandmother last winter", "was made by my grandmother from recycled wool last winter", "was made from recycled wool by my grandmother last winter."],
+            26: ["plastic bags have already been banned by the city council", "have already been banned by the city council", "have been banned by the city council already", "have already been banned by the city council."],
+            27: ["five hundred trees will be planted along the canal next month by volunteers", "will be planted along the canal next month by volunteers", "will be planted along the canal by volunteers next month", "will be planted along the canal next month by volunteers."],
+            28: ["the classroom must be kept clean", "must be kept clean", "must be kept clean."],
+            29: ["each student was given a reusable bottle by the teacher", "was given a reusable bottle by the teacher", "was given a reusable bottle by the teacher."],
+            30: ["a new recycling centre is going to be built next year", "is going to be built next year", "is going to be built by the city next year", "a new recycling centre is going to be built by the city next year", "is going to be built next year."]
+        };
+
+        // Vocabulary Pop-up Dictionary (A2 Level and Above)
+        const dictionary = {
+            housework: { word: 'Housework', phonetic: '/ˈhaʊswɜːk/', type: 'noun (A2)', meaning: 'Công việc nhà (dọn dẹp, nấu ăn...)' },
+            relax: { word: 'Relax', phonetic: '/rɪˈlæks/', type: 'verb (A2)', meaning: 'Thư giãn, nghỉ ngơi' },
+            experts: { word: 'Experts', phonetic: '/ˈekspɜːts/', type: 'noun (B1)', meaning: 'Các chuyên gia' },
+            sharing: { word: 'Sharing', phonetic: '/ˈʃeərɪŋ/', type: 'verb/noun (A2)', meaning: 'Sự chia sẻ, dùng chung' },
+            chores: { word: 'Chores', phonetic: '/tʃɔːz/', type: 'noun (A2)', meaning: 'Công việc vặt trong nhà' },
+            useful: { word: 'Useful', phonetic: '/ˈjuːsfl/', type: 'adjective (A2)', meaning: 'Hữu ích, bổ ích' },
+            managing: { word: 'Managing', phonetic: '/ˈmænɪdʒɪŋ/', type: 'verb (B1)', meaning: 'Quản lý, sắp xếp' },
+            free_time: { word: 'Free time', phonetic: '/friː taɪm/', type: 'noun (A2)', meaning: 'Thời gian rảnh rỗi' },
+            hobbies: { word: 'Hobbies', phonetic: '/ˈhɒbiz/', type: 'noun (A2)', meaning: 'Sở thích cá nhân' },
+            efforts: { word: 'Efforts', phonetic: '/ˈefəts/', type: 'noun (B1)', meaning: 'Sự nỗ lực, cố gắng' },
+            matter: { word: 'Matter', phonetic: '/ˈmætə/', type: 'verb (B1)', meaning: 'Có ý nghĩa, quan trọng' },
+            habits: { word: 'Habits', phonetic: '/ˈhæbɪts/', type: 'noun (A2)', meaning: 'Thói quen' },
+            praise: { word: 'Praise', phonetic: '/preɪz/', type: 'verb (B2)', meaning: 'Khen ngợi, tuyên dương' },
+            timetable: { word: 'Timetable', phonetic: '/ˈtaɪmˌteɪbl/', type: 'noun (A2)', meaning: 'Thời gian biểu, lịch trình' },
+            patience: { word: 'Patience', phonetic: '/ˈpeɪʃns/', type: 'noun (B1)', meaning: 'Sự kiên nhẫn, nhẫn nại' },
+            cheerful: { word: 'Cheerful', phonetic: '/ˈtʃɪəfl/', type: 'adjective (B1)', meaning: 'Vui vẻ, phấn khởi' },
+            
+            reduce: { word: 'Reduce', phonetic: '/rɪˈdjuːs/', type: 'verb (A2)', meaning: 'Cắt giảm, giảm bớt' },
+            pollution: { word: 'Pollution', phonetic: '/pəˈluːʃn/', type: 'noun (B1)', meaning: 'Sự ô nhiễm (không khí, nước...)' },
+            event: { word: 'Event', phonetic: '/ɪˈvent/', type: 'noun (A2)', meaning: 'Sự kiện' },
+            traffic: { word: 'Traffic', phonetic: '/ˈtræfɪk/', type: 'noun (A2)', meaning: 'Giao thông' },
+            participant: { word: 'Participant', phonetic: '/pɑːˈtɪsɪpənt/', type: 'noun (B2)', meaning: 'Người tham gia' },
+            cycles: { word: 'Cycles', phonetic: '/ˈsaɪklz/', type: 'verb (A2)', meaning: 'Đi xe đạp' },
+            receive: { word: 'Receive', phonetic: '/rɪˈsiːv/', type: 'verb (A2)', meaning: 'Nhận được' },
+            responsible: { word: 'Responsible', phonetic: '/rɪˈspɒnsəbl/', type: 'adj (B1)', meaning: 'Chịu trách nhiệm' },
+            monitors: { word: 'Monitors', phonetic: '/ˈmɒnɪtəz/', type: 'noun (B1)', meaning: 'Lớp trưởng / Cán sự' },
+            priority: { word: 'Priority', phonetic: '/praɪˈɒrəti/', type: 'noun (B2)', meaning: 'Sự ưu tiên hàng đầu' },
+            website: { word: 'Website', phonetic: '/ˈwebsaɪt/', type: 'noun (A2)', meaning: 'Trang web trường' },
+
+            coastal: { word: 'Coastal', phonetic: '/ˈkəʊstl/', type: 'adjective (B2)', meaning: 'Thuộc vùng ven biển' },
+            district: { word: 'District', phonetic: '/ˈdɪstrɪkt/', type: 'noun (B1)', meaning: 'Quận, huyện' },
+            mangrove: { word: 'Mangrove', phonetic: '/ˈmæŋɡrəʊv/', type: 'noun (B2)', meaning: 'Cây rừng ngập mặn' },
+            protect: { word: 'Protect', phonetic: '/prəˈtekt/', type: 'verb (A2)', meaning: 'Bảo vệ, che chở' },
+            shelter: { word: 'Shelter', phonetic: '/ˈʃeltə/', type: 'noun (B2)', meaning: 'Nơi trú ẩn, chỗ ở' },
+            washed_away: { word: 'Washed away', phonetic: '/wɒʃt əˈweɪ/', type: 'verb phrase (B1)', meaning: 'Bị cuốn trôi, xói mòn' },
+            destroyed: { word: 'Destroyed', phonetic: '/dɪˈstrɔɪd/', type: 'verb (A2)', meaning: 'Bị tàn phá, phá hủy' },
+            decades: { word: 'Decades', phonetic: '/ˈdekeɪdz/', type: 'noun (B1)', meaning: 'Thập kỷ (10 năm)' },
+            result: { word: 'Result', phonetic: '/rɪˈzʌlt/', type: 'noun (A2)', meaning: 'Kết quả' },
+            waves: { word: 'Waves', phonetic: '/weɪvz/', type: 'noun (A2)', meaning: 'Sóng biển' },
+            gradually: { word: 'Gradually', phonetic: '/ˈɡrædʒuəli/', type: 'adverb (B1)', meaning: 'Dần dần, từ từ' },
+            improved: { word: 'Improved', phonetic: '/ɪmˈpruːvd/', type: 'verb (A2)', meaning: 'Được cải thiện' },
+            authorities: { word: 'Authorities', phonetic: '/ɔːˈθɒrətiz/', type: 'noun (B2)', meaning: 'Chính quyền, cơ quan chức năng' },
+            launched: { word: 'Launched', phonetic: '/lɔːntʃt/', type: 'verb (B2)', meaning: 'Phát động, khởi xướng' },
+            replanting: { word: 'Replanting', phonetic: '/ˌriːˈplɑːntɪŋ/', type: 'verb (B2)', meaning: 'Trồng lại rừng' },
+            volunteers: { word: 'Volunteers', phonetic: '/ˌvɒlənˈtɪəz/', type: 'noun (B1)', meaning: 'Tình nguyện viên' },
+            value: { word: 'Value', phonetic: '/ˈvæljuː/', type: 'noun (A2)', meaning: 'Giá trị' },
+            guiding: { word: 'Guiding', phonetic: '/ˈɡaɪdɪŋ/', type: 'verb (B1)', meaning: 'Dẫn đường, hướng dẫn khách' },
+            tunnels: { word: 'Tunnels', phonetic: '/ˈtʌnlz/', type: 'noun (B2)', meaning: 'Đường hầm (vòm lá)' },
+            recovered: { word: 'Recovered', phonetic: '/rɪˈkʌvəd/', type: 'verb (B2)', meaning: 'Phục hồi' },
+            treasure: { word: 'Treasure', phonetic: '/ˈtreʒə/', type: 'noun (B1)', meaning: 'Kho báu, báu vật' },
+            wildlife: { word: 'Wildlife', phonetic: '/ˈwaɪldlaɪf/', type: 'noun (B1)', meaning: 'Động thực vật hoang dã' },
+
+            prepare: { word: 'Prepare', phonetic: '/prɪˈpeə/', type: 'verb (A2)', meaning: 'Chuẩn bị' },
+            freedom: { word: 'Freedom', phonetic: '/ˈfriːdəm/', type: 'noun (A2)', meaning: 'Sự tự do' },
+            disagreement: { word: 'Disagreement', phonetic: '/ˌdɪsəˈɡriːmənt/', type: 'noun (B1)', meaning: 'Sự bất đồng' },
+            arguments: { word: 'Arguments', phonetic: '/ˈɑːɡjumənts/', type: 'noun (A2)', meaning: 'Sự tranh cãi' },
+            compromise: { word: 'Compromise', phonetic: '/ˈkɒmprəmaɪz/', type: 'verb (B2)', meaning: 'Thỏa hiệp, nhượng bộ' },
+            collect: { word: 'Collect', phonetic: '/kəˈlekt/', type: 'verb (A2)', meaning: 'Thu gom, gom lại' },
+            sort: { word: 'Sort', phonetic: '/sɔːt/', type: 'verb (A2)', meaning: 'Phân loại' },
+            vital: { word: 'Vital', phonetic: '/ˈvaɪtl/', type: 'adjective (B2)', meaning: 'Vô cùng quan trọng' },
+            erosion: { word: 'Erosion', phonetic: '/ɪˈrəʊʒn/', type: 'noun (B2)', meaning: 'Sự xói mòn' },
+            remaining: { word: 'Remaining', phonetic: '/rɪˈmeɪnɪŋ/', type: 'adjective (B1)', meaning: 'Còn lại' },
+            generations: { word: 'Generations', phonetic: '/ˌdʒenəˈreɪʃnz/', type: 'noun (B1)', meaning: 'Thế hệ' }
+        };
+
+        // User interaction tracking
+        let userSelections = {};
+
+        function toggleDropMenu(qNum, event) {
+            if (event) event.stopPropagation();
+            
+            // Close all other dropdown menus first
+            document.querySelectorAll('.drop-menu-box').forEach(menu => {
+                if (menu.id !== `drop-menu-${qNum}`) {
+                    menu.classList.add('hidden');
+                }
+            });
+
+            const targetMenu = document.getElementById(`drop-menu-${qNum}`);
+            const btn = document.getElementById(`blank-btn-${qNum}`);
+
+            if (targetMenu && btn) {
+                const isHidden = targetMenu.classList.contains('hidden');
+                if (isHidden) {
+                    // Calculate exact pixel position of the blank button on screen
+                    const rect = btn.getBoundingClientRect();
+                    targetMenu.style.position = 'fixed';
+                    targetMenu.style.top = (rect.bottom + 6) + 'px';
+                    
+                    // Prevent menu from clipping off the right or left edge of the screen
+                    const menuWidth = 260;
+                    let leftPos = rect.left;
+                    if (leftPos + menuWidth > window.innerWidth - 16) {
+                        leftPos = window.innerWidth - menuWidth - 16;
+                    }
+                    if (leftPos < 16) leftPos = 16;
+
+                    targetMenu.style.left = leftPos + 'px';
+                    targetMenu.style.zIndex = '9999';
+                    targetMenu.classList.remove('hidden');
+                } else {
+                    targetMenu.classList.add('hidden');
+                }
+            }
+        }
+
+        function selectDropOption(qNum, option, text) {
+            userSelections[qNum] = option;
+            const correctChoice = answerKeys[qNum];
+            
+            // Update blank text & styling based on correctness
+            const btnText = document.getElementById(`blank-text-${qNum}`);
+            const btnObj = document.getElementById(`blank-btn-${qNum}`);
+            const explainBtn = document.getElementById(`explain-btn-${qNum}`);
+
+            if (btnText && btnObj) {
+                btnText.textContent = `(${qNum}) ${text}`;
+                if (option === correctChoice) {
+                    btnObj.className = "px-4 py-1.5 rounded-xl font-extrabold border-2 border-emerald-600 bg-emerald-100 text-emerald-950 shadow-xs text-lg sm:text-xl inline-flex items-center space-x-2 cursor-pointer";
+                    // Show "!" Button on Correct Choice
+                    if (explainBtn) explainBtn.classList.remove('hidden');
+                } else {
+                    btnObj.className = "px-4 py-1.5 rounded-xl font-extrabold border-2 border-rose-500 bg-rose-100 text-rose-950 shadow-xs text-lg sm:text-xl inline-flex items-center space-x-2 cursor-pointer";
+                    // Hide "!" Button if incorrect
+                    if (explainBtn) explainBtn.classList.add('hidden');
+                }
+            }
+
+            // Close dropdown menu
+            const targetMenu = document.getElementById(`drop-menu-${qNum}`);
+            if (targetMenu) targetMenu.classList.add('hidden');
+
+            updateProgressCount();
+        }
+
+        function openExplainModal(qNum, event) {
+            if (event) event.stopPropagation();
+            const data = explanationsData[qNum];
+            if (!data) return;
+
+            document.getElementById('exp-modal-title').textContent = data.title;
+            document.getElementById('exp-modal-answer').innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-2"></i> ${data.answer}`;
+            document.getElementById('exp-modal-detail').innerHTML = data.detail;
+
+            document.getElementById('explanation-modal').classList.remove('hidden');
+        }
+
+        function closeExplainModal() {
+            document.getElementById('explanation-modal').classList.add('hidden');
+        }
+
+        function toggleAccordion(id) {
+            const el = document.getElementById(id);
+            const icon = document.getElementById(`${id}-icon`);
+            if (el) {
+                el.classList.toggle('hidden');
+                if (icon) {
+                    icon.classList.toggle('rotate-180');
+                }
+            }
+        }
+
+        function selectOption(qNum, option) {
+            userSelections[qNum] = option;
+            
+            // Clear prior selection styling in this question
+            const qBox = document.getElementById(`q-box-${qNum}`);
+            const buttons = qBox.querySelectorAll('.opt-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-emerald-100', 'border-emerald-600', 'text-emerald-950', 'font-extrabold');
+            });
+
+            // Highlight newly selected option
+            const targetBtn = document.getElementById(`q${qNum}-${option}`);
+            if (targetBtn) {
+                targetBtn.classList.add('bg-emerald-100', 'border-emerald-600', 'text-emerald-950', 'font-extrabold');
+            }
+
+            updateProgressCount();
+        }
+
+        function checkQuestion(qNum) {
+            const userChoice = userSelections[qNum];
+            const correctChoice = answerKeys[qNum];
+            const explainBox = document.getElementById(`explain-${qNum}`);
+
+            // Show explanation
+            if (explainBox) explainBox.classList.remove('hidden');
+
+            const qBox = document.getElementById(`q-box-${qNum}`);
+            if (qBox) {
+                if (userChoice === correctChoice) {
+                    qBox.classList.remove('border-slate-200', 'border-rose-300');
+                    qBox.classList.add('border-emerald-500', 'bg-emerald-50/30');
+                } else if (userChoice) {
+                    qBox.classList.remove('border-slate-200', 'border-emerald-500');
+                    qBox.classList.add('border-rose-400', 'bg-rose-50/30');
+                }
+            }
+        }
+
+        function checkWriting(qNum) {
+            const inputVal = document.getElementById(`q${qNum}-input`).value.trim().toLowerCase();
+            const explainBox = document.getElementById(`explain-${qNum}`);
+            explainBox.classList.remove('hidden');
+
+            const validAnswers = writingKeys[qNum];
+            const qBox = document.getElementById(`q-box-${qNum}`);
+
+            // Normalize spacing for comparison
+            const normalizedInput = inputVal.replace(/\s+/g, ' ');
+            const isCorrect = validAnswers.some(ans => ans.toLowerCase() === normalizedInput);
+
+            if (isCorrect) {
+                qBox.classList.remove('border-slate-200', 'border-rose-300');
+                qBox.classList.add('border-emerald-500', 'bg-emerald-50/30');
+            } else {
+                qBox.classList.remove('border-slate-200', 'border-emerald-500');
+                qBox.classList.add('border-amber-400');
+            }
+            updateProgressCount();
+        }
+
+        function highlightEvidence(evidenceId) {
+            // Remove previous highlights
+            const oldHighlights = document.querySelectorAll('.evidence-highlight');
+            oldHighlights.forEach(el => el.classList.remove('evidence-highlight'));
+
+            const target = document.getElementById(evidenceId);
+            if (target) {
+                target.classList.add('evidence-highlight');
+                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function showVocab(key) {
+            const data = dictionary[key];
+            if (!data) return;
+
+            document.getElementById('v-word').textContent = data.word;
+            document.getElementById('v-type').textContent = `${data.phonetic} • ${data.type}`;
+            document.getElementById('v-meaning').textContent = data.meaning;
+
+            document.getElementById('vocab-modal').classList.remove('hidden');
+        }
+
+        function closeVocab() {
+            document.getElementById('vocab-modal').classList.add('hidden');
+        }
+
+        function updateProgressCount() {
+            let count = Object.keys(userSelections).length;
+            for (let i = 21; i <= 30; i++) {
+                const val = document.getElementById(`q${i}-input`)?.value.trim();
+                if (val && val !== "") count++;
+            }
+            document.getElementById('progress-count').textContent = `${Math.min(count, 30)}/30`;
+        }
+
+        function resetExam() {
+            userSelections = {};
+            
+            // Reset dropdown blanks Q1-Q11
+            for (let i = 1; i <= 11; i++) {
+                const btnText = document.getElementById(`blank-text-${i}`);
+                const btnObj = document.getElementById(`blank-btn-${i}`);
+                const explainBtn = document.getElementById(`explain-btn-${i}`);
+
+                if (btnText && btnObj) {
+                    btnText.textContent = `(${i}) ________`;
+                    btnObj.className = "px-4 py-1.5 rounded-xl font-extrabold border-2 border-emerald-600 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 transition shadow-xs text-lg sm:text-xl inline-flex items-center space-x-2 cursor-pointer";
+                }
+                if (explainBtn) explainBtn.classList.add('hidden');
+            }
+
+            // Close all open drop menus & modals
+            document.querySelectorAll('.drop-menu-box').forEach(m => m.classList.add('hidden'));
+            closeExplainModal();
+            closeVocab();
+
+            // Clear option styling
+            document.querySelectorAll('.opt-btn').forEach(btn => {
+                btn.classList.remove('bg-emerald-100', 'border-emerald-600', 'text-emerald-950', 'font-extrabold');
+            });
+
+            // Clear inputs
+            for (let i = 21; i <= 30; i++) {
+                const inp = document.getElementById(`q${i}-input`);
+                if (inp) inp.value = '';
+            }
+
+            // Hide explanations & reset question box borders
+            for (let i = 1; i <= 30; i++) {
+                const exp = document.getElementById(`explain-${i}`);
+                if (exp) exp.classList.add('hidden');
+
+                const box = document.getElementById(`q-box-${i}`);
+                if (box) {
+                    box.className = box.className.replace(/border-(emerald|rose|amber)-\d+/g, '').replace(/bg-(emerald|rose)-\d+\/\d+/g, '');
+                    box.classList.add('border-slate-200');
+                }
+            }
+
+            // Close integrated accordions
+            const acc1 = document.getElementById('part1-explain');
+            if (acc1 && !acc1.classList.contains('hidden')) acc1.classList.add('hidden');
+            const acc2 = document.getElementById('part2-explain');
+            if (acc2 && !acc2.classList.contains('hidden')) acc2.classList.add('hidden');
+
+            // Remove evidence highlights
+            document.querySelectorAll('.evidence-highlight').forEach(el => el.classList.remove('evidence-highlight'));
+
+            updateProgressCount();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Close dropdowns & modal when clicking outside
+        window.onclick = function(event) {
+            const vModal = document.getElementById('vocab-modal');
+            const eModal = document.getElementById('explanation-modal');
+
+            if (event.target === vModal) closeVocab();
+            if (event.target === eModal) closeExplainModal();
+
+            // Close inline drop menus when clicking outside container
+            if (!event.target.closest('.blank-span-container') && !event.target.closest('.drop-menu-box')) {
+                document.querySelectorAll('.drop-menu-box').forEach(m => {
+                    m.classList.add('hidden');
+                });
+            }
+        };
+
+        // Close dropdown menus smoothly on page scroll
+        window.addEventListener('scroll', function() {
+            document.querySelectorAll('.drop-menu-box').forEach(m => m.classList.add('hidden'));
+        }, true);
+    </script>
+</body>
+</html>
